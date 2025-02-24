@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mytube - Login & Sign Up</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            background: #f5f5f5;
+            color: #333;
+        }
+
+        .website-logo {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .container {
+            background: #fff;
+            padding: 20px;
+            width: 90%;
+            max-width: 400px;
+            border-radius: 10px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        .form {
+            display: none;
+        }
+
+        .form.active {
+            display: block;
+        }
+
+        input, button {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            font-size: 16px;
+            box-sizing: border-box;
+            text-align: center;
+        }
+
+        .login-btn, .signup-btn {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            font-weight: bold;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .login-btn {
+            background: #007bff;
+            color: white;
+        }
+
+        .login-btn:hover {
+            background: #0056b3;
+        }
+
+        .signup-btn {
+            background: #28a745;
+            color: white;
+        }
+
+        .signup-btn:hover {
+            background: #1e7e34;
+        }
+
+        .toggle-btn {
+            background: none;
+            color: #007bff;
+            border: none;
+            cursor: pointer;
+            text-decoration: underline;
+            font-size: 14px;
+            margin-top: 10px;
+        }
+
+        .error {
+            color: red;
+            font-size: 12px;
+            margin-top: -8px;
+            display: none;
+        }
+    </style>
+    <script>
+        function showMessage(message) {
+            alert(message);
+        }
+
+        function toggleForms() {
+            document.getElementById("login-form").classList.toggle("active");
+            document.getElementById("signup-form").classList.toggle("active");
+        }
+
+        function validatePassword() {
+            var password = document.getElementById("password").value;
+            var error = document.getElementById("password-error");
+            var regex = /^[a-zA-Z0-9]{8,}$/;
+            if (!regex.test(password)) {
+                error.style.display = "block";
+            } else {
+                error.style.display = "none";
+            }
+        }
+
+        function validateConfirmPassword() {
+            var password = document.getElementById("password").value;
+            var confirmPassword = document.getElementById("confirm-password").value;
+            var error = document.getElementById("confirm-password-error");
+            if (password !== confirmPassword) {
+                error.style.display = "block";
+            } else {
+                error.style.display = "none";
+            }
+        }
+
+        function validateAndSubmit() {
+            validatePassword();
+            validateConfirmPassword();
+            if (document.getElementById("password-error").style.display === "none" &&
+                document.getElementById("confirm-password-error").style.display === "none") {
+                showMessage("Successfully Signed Up!");
+            }
+        }
+    </script>
+</head>
+<body>
+
+<div class="website-logo">
+    <img src="logo.webp" alt="logo.webp" width="150">
+</div>  
+
+<div class="container">
+    <div id="login-form" class="form active">
+        <h2>Login</h2>
+        <input type="text" placeholder="Username" required>
+        <input type="password" placeholder="Password" required>
+        <button class="login-btn" onclick="showMessage('Successfully Logged In!')">Login</button>
+        <p>Don't have an account? <button class="toggle-btn" onclick="toggleForms()">Sign Up</button></p>
+    </div>
+
+    <div id="signup-form" class="form">
+        <h2>Sign Up</h2>
+        <input type="text" placeholder="Full Name" required>
+        <input type="email" placeholder="Email" required>
+        <input type="password" id="password" placeholder="Create Password" required onkeyup="validatePassword()">
+        <p id="password-error" class="error">Password must be at least 8 characters and contain only alphanumeric characters.</p>
+        <input type="password" id="confirm-password" placeholder="Confirm Password" required onkeyup="validateConfirmPassword()">
+        <p id="confirm-password-error" class="error">Passwords do not match.</p>
+        <button class="signup-btn" onclick="validateAndSubmit()">Sign Up</button>
+        <p>Already have an account? <button class="toggle-btn" onclick="toggleForms()">Login</button></p>
+    </div>
+</div>
+</body>
+</html>
