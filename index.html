@@ -52,9 +52,6 @@
         }
 
         .login-btn, .signup-btn {
-            display: block;
-            width: 100%;
-            padding: 10px;
             font-size: 16px;
             font-weight: bold;
             border: none;
@@ -103,36 +100,39 @@
         }
 
         function toggleForms() {
-            document.getElementById("login-form").classList.toggle("active");
-            document.getElementById("signup-form").classList.toggle("active");
+            let loginForm = document.getElementById("login-form");
+            let signupForm = document.getElementById("signup-form");
+            loginForm.style.display = loginForm.style.display === "none" ? "block" : "none";
+            signupForm.style.display = signupForm.style.display === "none" ? "block" : "none";
+        }
+
+        function validateEmail() {
+            let email = document.getElementById("email").value;
+            let error = document.getElementById("email-error");
+            let regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            error.style.display = regex.test(email) ? "none" : "block";
         }
 
         function validatePassword() {
-            var password = document.getElementById("password").value;
-            var error = document.getElementById("password-error");
-            var regex = /^[a-zA-Z0-9]{8,}$/;
-            if (!regex.test(password)) {
-                error.style.display = "block";
-            } else {
-                error.style.display = "none";
-            }
+            let password = document.getElementById("password").value;
+            let error = document.getElementById("password-error");
+            let regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/;
+            error.style.display = regex.test(password) ? "none" : "block";
         }
 
         function validateConfirmPassword() {
-            var password = document.getElementById("password").value;
-            var confirmPassword = document.getElementById("confirm-password").value;
-            var error = document.getElementById("confirm-password-error");
-            if (password !== confirmPassword) {
-                error.style.display = "block";
-            } else {
-                error.style.display = "none";
-            }
+            let password = document.getElementById("password").value;
+            let confirmPassword = document.getElementById("confirm-password").value;
+            let error = document.getElementById("confirm-password-error");
+            error.style.display = password === confirmPassword ? "none" : "block";
         }
 
         function validateAndSubmit() {
+            validateEmail();
             validatePassword();
             validateConfirmPassword();
-            if (document.getElementById("password-error").style.display === "none" &&
+            if (document.getElementById("email-error").style.display === "none" &&
+                document.getElementById("password-error").style.display === "none" &&
                 document.getElementById("confirm-password-error").style.display === "none") {
                 showMessage("Successfully Signed Up!");
             }
@@ -154,12 +154,13 @@
         <p>Don't have an account? <button class="toggle-btn" onclick="toggleForms()">Sign Up</button></p>
     </div>
 
-    <div id="signup-form" class="form">
+    <div id="signup-form" class="form" style="display: none;">
         <h2>Sign Up</h2>
         <input type="text" placeholder="Full Name" required>
-        <input type="email" placeholder="Email" required>
+        <input type="email" id="email" placeholder="Email" required onkeyup="validateEmail()">
+        <p id="email-error" class="error">Enter a valid email.</p>
         <input type="password" id="password" placeholder="Create Password" required onkeyup="validatePassword()">
-        <p id="password-error" class="error">Password must be at least 8 characters and contain only alphanumeric characters.</p>
+        <p id="password-error" class="error">Password must be at least 8 characters, contain one uppercase, one lowercase, and one number.</p>
         <input type="password" id="confirm-password" placeholder="Confirm Password" required onkeyup="validateConfirmPassword()">
         <p id="confirm-password-error" class="error">Passwords do not match.</p>
         <button class="signup-btn" onclick="validateAndSubmit()">Sign Up</button>
